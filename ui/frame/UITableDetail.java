@@ -50,7 +50,7 @@ public class UITableDetail extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public UITableDetail(String tableName, boolean paid) {
+	public UITableDetail(String tableName, boolean paid, JFrame frame) {
 		setTitle(tableName);
 		setResizable(false);
 		generateFrameSize();
@@ -62,7 +62,7 @@ public class UITableDetail extends JFrame {
 
 		addPayButton(addBillTable(), this);
 		addCancelButton(this);
-		addBackButton();
+		addBackButton(frame);
 		addInfoBar(tableName, paid);
 
 	}
@@ -141,13 +141,15 @@ public class UITableDetail extends JFrame {
 		setVisible(true);
 	}
 
-	private void addBackButton() {
+	private void addBackButton(JFrame frame) {
+		final JFrame finalHome = frame;
 		// BUTTON ACTION: BACK TO HOME
 		btnBack = new JButton("\u2190");
 		btnBack.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				setVisible(false);
+				finalHome.setVisible(true);
 			}
 		});
 		btnBack.setFont(new Font("Tahoma", Font.BOLD, 30));

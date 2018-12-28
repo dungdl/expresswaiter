@@ -42,7 +42,7 @@ public class UIHome extends JFrame {
 		setResizable(false);
 		generateFrameSize();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(this.frame_x, this.frame_y, 874, 663);
+		setBounds(this.frame_x, this.frame_y, this.frame_width, this.frame_height);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -51,36 +51,38 @@ public class UIHome extends JFrame {
 
 		addPanelTable();
 		addPanelInfo();
-		addTestTable("Table 12", false);
+		addTestTable("Table 12", false, this);
 	}
 
 	private void addPanelTable() {
 		pnTables = new JPanel();
 		pnTables.setBorder(new LineBorder(SystemColor.activeCaptionBorder));
-		pnTables.setBounds(10, 10, 848, 530); // 665/1920 , 703/1080 , x = 665/1920 , 665 = screen width * x,
+		pnTables.setBounds(10, 10, this.frame_width - 26, this.frame_height - 133);
 		contentPane.add(pnTables);
 		pnTables.setLayout(null);
 	}
 
 	private void addPanelInfo() {
 		pnInfo = new PanelInfo();
-		pnInfo.setBounds(10, 553, 848, 70);
+		pnInfo.setBounds(10, pnTables.getHeight() + 23, this.frame_width - 26, 70);
 		contentPane.add(pnInfo);
 	}
 
 	// NOTE: FUNCTION FOR TESTING ONLY
-	private void addTestTable(String tableName, boolean status) {
+	private void addTestTable(String tableName, boolean status, JFrame frame) {
 		final String finalTableName = tableName;
 		final boolean finalStatus = status;
+		final JFrame finalHome = frame;
 		JButton btnTestButt = new JButton(finalTableName);
 		btnTestButt.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				UITableDetail frame = new UITableDetail(finalTableName, finalStatus);
+				UITableDetail frame = new UITableDetail(finalTableName, finalStatus, finalHome);
+				setVisible(false);
 				frame.setVisible(true);
 			}
 		});
-		btnTestButt.setBounds(10, 11, 123, 70);
+		btnTestButt.setBounds(10, 10, 123, 70);
 		pnTables.add(btnTestButt);
 	}
 
@@ -94,5 +96,5 @@ public class UIHome extends JFrame {
 		this.frame_width = (int) (screen_width * SCALE_WIDTH);
 		this.frame_height = (int) (screen_height * SCALE_HEIGHT);
 	}
-	
+
 }
