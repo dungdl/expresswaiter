@@ -9,6 +9,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.border.LineBorder;
 import java.awt.SystemColor;
+import java.awt.Font;
+import java.awt.Color;
 
 @SuppressWarnings("serial")
 public class UIHome extends JFrame {
@@ -56,6 +58,7 @@ public class UIHome extends JFrame {
 
 	private void addPanelTable() {
 		pnTables = new JPanel();
+		pnTables.setBackground(Color.WHITE);
 		pnTables.setBorder(new LineBorder(SystemColor.activeCaptionBorder));
 		pnTables.setBounds(10, 10, this.frame_width - 26, this.frame_height - 133);
 		contentPane.add(pnTables);
@@ -64,6 +67,7 @@ public class UIHome extends JFrame {
 
 	private void addPanelInfo() {
 		pnInfo = new PanelInfo();
+		pnInfo.setBackground(Color.WHITE);
 		pnInfo.setBounds(10, pnTables.getHeight() + 23, this.frame_width - 26, 70);
 		contentPane.add(pnInfo);
 	}
@@ -74,6 +78,7 @@ public class UIHome extends JFrame {
 		final boolean finalStatus = status;
 		final JFrame finalHome = frame;
 		JButton btnTestButt = new JButton(finalTableName);
+		btnTestButt.setFont(new Font("Arial", Font.PLAIN, 15));
 		btnTestButt.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {

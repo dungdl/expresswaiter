@@ -81,7 +81,9 @@ public class DialogPayBill extends JDialog {
 						else
 							System.out.println("No print bill");
 						finalFrame.setVisible(false);
-						setVisible(false);
+						DialogPayBill.this.dispose();
+						
+						UIHome home = new UIHome();
 
 					}
 				});
@@ -156,6 +158,9 @@ public class DialogPayBill extends JDialog {
 		table.setBorder(new LineBorder(SystemColor.activeCaptionBorder));
 		table.setModel(new DefaultTableModel(orderList, new String[] { "Food ", "Amount", "Price" }));
 
+		table.getTableHeader().setFont(new Font("Arial", Font.BOLD, 12));
+	    table.getTableHeader().setReorderingAllowed(false);
+	    
 		table.getColumnModel().getColumn(0).setPreferredWidth(104);
 		table.getColumnModel().getColumn(1).setPreferredWidth(49);
 		table.getColumnModel().getColumn(2).setPreferredWidth(49);

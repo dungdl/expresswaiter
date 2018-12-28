@@ -18,6 +18,8 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import java.awt.Color;
 import javax.swing.JScrollPane;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class UITableDetail extends JFrame {
 
@@ -56,6 +58,7 @@ public class UITableDetail extends JFrame {
 		generateFrameSize();
 		setBounds(this.frame_x, this.frame_y, 580, 642);
 		contentPane = new JPanel();
+		contentPane.setBackground(Color.WHITE);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -73,9 +76,10 @@ public class UITableDetail extends JFrame {
 		contentPane.add(scrollPane);
 
 		table = new JTable();
+		table.setBackground(Color.WHITE);
 		scrollPane.setViewportView(table);
 		table.setCellSelectionEnabled(true);
-		table.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		table.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		table.setBorder(new LineBorder(SystemColor.activeCaptionBorder));
 
 		Object[][] orderList = { { "Chicken", "1", "50" }, { "Rice", "5", "50" }, { "Beer", "10", "50" },
@@ -83,14 +87,16 @@ public class UITableDetail extends JFrame {
 				{ null, null, null }, { null, null, null }, { null, null, null }, { null, null, null },
 				{ null, null, null }, { null, null, null }, { null, null, null }, { null, null, null },
 				{ null, null, null }, { null, null, null }, { null, null, null }, { null, null, null },
-				{ null, null, null }, { null, null, null }, { null, null, null }, { null, null, null },
-				{ null, null, null }, { null, null, null }, { null, null, null }, { null, null, null },
-				{ null, null, null }, { null, null, null }, { null, null, null } };
+				{ null, null, null } };
 
 		table.setModel(new DefaultTableModel(orderList, new String[] { "Food ", "Amount", "Price" }));
 		table.getColumnModel().getColumn(0).setPreferredWidth(104);
 		table.getColumnModel().getColumn(1).setPreferredWidth(49);
 		table.getColumnModel().getColumn(2).setPreferredWidth(49);
+
+		table.getTableHeader().setFont(new Font("Arial", Font.BOLD, 15));
+		table.getTableHeader().setReorderingAllowed(false);
+		table.setRowHeight(25);
 
 		return orderList;
 	}
@@ -100,6 +106,10 @@ public class UITableDetail extends JFrame {
 		final Object[][] finalOrderList = orderList;
 		final JFrame finalFrame = frame;
 		btnPayButton = new JButton("Thanh To\u00E1n");
+		btnPayButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
 		btnPayButton.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		btnPayButton.addMouseListener(new MouseAdapter() {
 			@Override
@@ -113,6 +123,9 @@ public class UITableDetail extends JFrame {
 				}
 			}
 		});
+		
+		
+		btnPayButton.setBackground(new Color(102, 204, 102));
 
 		btnPayButton.setBounds(436, 419, 120, 58);
 		contentPane.add(btnPayButton);
@@ -136,6 +149,8 @@ public class UITableDetail extends JFrame {
 			}
 		});
 		btnCancel.setBounds(436, 488, 120, 58);
+		btnCancel.setBackground(new Color(255, 102, 102));
+
 		contentPane.add(btnCancel);
 
 		setVisible(true);
@@ -152,7 +167,7 @@ public class UITableDetail extends JFrame {
 				finalHome.setVisible(true);
 			}
 		});
-		btnBack.setFont(new Font("Tahoma", Font.BOLD, 30));
+		btnBack.setFont(new Font("Tahoma", Font.BOLD, 24));
 		btnBack.setBounds(436, 557, 118, 35);
 		contentPane.add(btnBack);
 	}
@@ -163,20 +178,21 @@ public class UITableDetail extends JFrame {
 		// LABEL: Show table's name
 		pnTableName = new JPanel();
 		pnTableName.setBorder(new LineBorder(SystemColor.activeCaptionBorder));
-		pnTableName.setBounds(436, 6, 120, 58);
+		pnTableName.setBounds(436, 11, 120, 40);
 		contentPane.add(pnTableName);
 		pnTableName.setLayout(null);
 		{
 			lblTableName = new JLabel(tableName);
+			lblTableName.setHorizontalAlignment(SwingConstants.CENTER);
 			lblTableName.setFont(new Font("Arial", Font.PLAIN, 15));
-			lblTableName.setBounds(10, 11, 79, 36);
+			lblTableName.setBounds(10, 11, 100, 18);
 			pnTableName.add(lblTableName);
 		}
 
 		// LABEL: Show table's status
 		pnStatus = new JPanel();
 		pnStatus.setBorder(new LineBorder(SystemColor.activeCaptionBorder));
-		pnStatus.setBounds(436, 75, 120, 58);
+		pnStatus.setBounds(436, 64, 120, 40);
 		contentPane.add(pnStatus);
 		pnStatus.setLayout(null);
 		{
@@ -185,12 +201,12 @@ public class UITableDetail extends JFrame {
 				pnStatus.setBackground(new Color(182, 182, 182));
 
 			} else {
-				lblStatus = new JLabel("UNPAID");
-				pnStatus.setBackground(new Color(255, 102, 102));
+				lblStatus = new JLabel("NOT PAID");
+				pnStatus.setBackground(new Color(253, 243, 121));
 			}
 			lblStatus.setFont(new Font("Arial", Font.PLAIN, 15));
 			lblStatus.setHorizontalAlignment(SwingConstants.CENTER);
-			lblStatus.setBounds(10, 11, 97, 36);
+			lblStatus.setBounds(10, 11, 100, 18);
 			pnStatus.add(lblStatus);
 		}
 

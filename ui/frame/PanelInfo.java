@@ -47,7 +47,7 @@ public class PanelInfo extends JPanel {
 		
 		lblNumEmpty = new JLabel("0");
 		lblNumEmpty.setBounds(122, 7, 59, 28);
-		lblNumEmpty.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblNumEmpty.setFont(new Font("Tahoma", Font.BOLD, 16));
 		
 		add(pnEmpty);
 		pnEmpty.setLayout(null);
@@ -69,7 +69,7 @@ public class PanelInfo extends JPanel {
 		
 		lblNumBusy = new JLabel("0");
 		lblNumBusy.setBounds(121, 7, 59, 28);
-		lblNumBusy.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblNumBusy.setFont(new Font("Tahoma", Font.BOLD, 16));
 		
 		add(pnBusy);
 		pnBusy.setLayout(null);
@@ -91,7 +91,7 @@ public class PanelInfo extends JPanel {
 		
 		lblNumRepair = new JLabel("0");
 		lblNumRepair.setBounds(121, 6, 59, 28);
-		lblNumRepair.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblNumRepair.setFont(new Font("Tahoma", Font.BOLD, 16));
 		setLayout(null);
 		
 		add(pnRepair);
