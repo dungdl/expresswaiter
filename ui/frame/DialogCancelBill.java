@@ -15,12 +15,10 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 public class DialogCancelBill extends JDialog {
-	
-	
+
 	// CANCEL BILL DIALOG: Show when click on cancel bill button
 	// Nut huy don: hien ra khi an vao nut huy don
-	
-	
+
 	private final JPanel contentPanel = new JPanel();
 
 	// MARK:- Components
@@ -28,7 +26,7 @@ public class DialogCancelBill extends JDialog {
 	private JPanel pnButton;
 	private JButton btnOk;
 	private JButton btnCancel;
-	
+
 	/**
 	 * Create the dialog.
 	 */
@@ -41,7 +39,7 @@ public class DialogCancelBill extends JDialog {
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
-		
+
 		lblDialog = new JLabel("X\u00E1c nh\u1EADn h\u1EE7y \u0111\u01A1n?");
 		lblDialog.setFont(new Font("Arial", Font.PLAIN, 12));
 		lblDialog.setHorizontalAlignment(SwingConstants.LEFT);
@@ -57,9 +55,11 @@ public class DialogCancelBill extends JDialog {
 					@Override
 					public void mouseClicked(MouseEvent e) {
 						System.out.println("Cancel Bill");
-						finalFrame.setVisible(false);
-						setVisible(false);
-						
+						finalFrame.dispose();
+						DialogCancelBill.this.dispose();
+
+						UIHome home = new UIHome();
+
 					}
 				});
 				btnOk.setActionCommand("OK");
