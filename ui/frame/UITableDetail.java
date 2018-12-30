@@ -65,7 +65,7 @@ public class UITableDetail extends JFrame {
 
 		addPayButton(addBillTable(), this);
 		addCancelButton(this);
-		addBackButton(frame);
+		addBackButton();
 		addInfoBar(tableName, paid);
 
 	}
@@ -156,15 +156,17 @@ public class UITableDetail extends JFrame {
 		setVisible(true);
 	}
 
-	private void addBackButton(JFrame frame) {
-		final JFrame finalHome = frame;
+	private void addBackButton() {
+
 		// BUTTON ACTION: BACK TO HOME
 		btnBack = new JButton("\u2190");
 		btnBack.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				setVisible(false);
-				finalHome.setVisible(true);
+				
+				UITableDetail.this.dispose();
+				UIHome home = new UIHome();
 			}
 		});
 		btnBack.setFont(new Font("Tahoma", Font.BOLD, 24));

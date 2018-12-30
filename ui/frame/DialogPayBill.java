@@ -80,7 +80,7 @@ public class DialogPayBill extends JDialog {
 							System.out.println("Print bill");
 						else
 							System.out.println("No print bill");
-						finalFrame.setVisible(false);
+						finalFrame.dispose();
 						DialogPayBill.this.dispose();
 						
 						UIHome home = new UIHome();
