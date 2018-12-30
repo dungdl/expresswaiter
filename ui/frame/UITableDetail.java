@@ -9,6 +9,9 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
 import javax.swing.border.LineBorder;
 import java.awt.SystemColor;
 import java.awt.Font;
@@ -37,6 +40,8 @@ public class UITableDetail extends JFrame {
 	private JLabel lblTableName;
 	private JPanel pnStatus;
 	private JLabel lblStatus;
+	
+	private JFrame home;
 
 	// MARK:- Values
 	private int frame_x;
@@ -56,16 +61,20 @@ public class UITableDetail extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public UITableDetail(String tableName, boolean paid) {
+	public UITableDetail(String tableName, boolean paid, JFrame home) {
 		setTitle(tableName);
 		setResizable(false);
 		generateFrameSize();
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		showDialogWhenExit();
 		setBounds(this.frame_x, this.frame_y, 580, 642);
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.WHITE);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+
+		this.home = home;
 		
 		setVisible(true);
 
@@ -129,8 +138,7 @@ public class UITableDetail extends JFrame {
 				}
 			}
 		});
-		
-		
+
 		btnPayButton.setBackground(new Color(102, 204, 102));
 
 		btnPayButton.setBounds(436, 419, 120, 58);
@@ -145,11 +153,11 @@ public class UITableDetail extends JFrame {
 		btnCancel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				
+
 				String ObjButtons[] = { "Yes", "No" };
 				int PromptResult = JOptionPane.showOptionDialog(null, "Are you sure you want to cancel this bill?",
-						"Smart Restaurant", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null,
-						ObjButtons, ObjButtons[1]);
+						"Smart Restaurant", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, ObjButtons,
+						ObjButtons[1]);
 				if (PromptResult == JOptionPane.YES_OPTION) {
 					UITableDetail.this.dispose();
 					UIHome home = new UIHome();
@@ -165,16 +173,15 @@ public class UITableDetail extends JFrame {
 	}
 
 	private void addBackButton() {
-
+		
 		// BUTTON ACTION: BACK TO HOME
 		btnBack = new JButton("\u2190");
 		btnBack.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				setVisible(false);
-				
+
 				UITableDetail.this.dispose();
-				UIHome home = new UIHome();
+				home.setVisible(true);
 			}
 		});
 		btnBack.setFont(new Font("Tahoma", Font.BOLD, 24));
@@ -220,6 +227,24 @@ public class UITableDetail extends JFrame {
 			pnStatus.add(lblStatus);
 		}
 
+	}
+
+	// Hien thong bao xac nhan thoat khi bam X hoac Alt F4
+	private void showDialogWhenExit() {
+		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent we) {
+				String ObjButtons[] = { "Yes", "No" };
+				int PromptResult = JOptionPane.showOptionDialog(null, "Back to home?",
+						"Smart Restaurant", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, ObjButtons,
+						ObjButtons[1]);
+				if (PromptResult == JOptionPane.YES_OPTION) {
+					UITableDetail.this.dispose();
+					home.setVisible(true);
+				}
+			}
+		});
 	}
 
 	private void generateFrameSize() {

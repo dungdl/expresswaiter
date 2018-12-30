@@ -67,6 +67,7 @@ public class UIHome extends JFrame {
 		addPanelInfo();
 
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		tabbedPane.setFont(new Font("Arial", Font.BOLD, 16));
 
 		pn1F = new JPanel();
 		addFloorPane("Floor 1", pn1F);
@@ -75,9 +76,9 @@ public class UIHome extends JFrame {
 		pn3F = new JPanel();
 		addFloorPane("Floor 3", pn3F);
 
-		addTestTable("Table 12", false, pn1F);
-		addTestTable("Table 11", true, pn1F);
-		addTestTable("Table 21", true, pn2F);
+		addTestTable("Table 12", false, pn1F, this);
+		addTestTable("Table 11", true, pn1F, this);
+		addTestTable("Table 21", true, pn2F, this);
 
 	}
 
@@ -129,16 +130,16 @@ public class UIHome extends JFrame {
 	}
 
 	// NOTE: FUNCTION FOR TESTING ONLY
-	private void addTestTable(String tableName, boolean status, JPanel floor) {
+	private void addTestTable(String tableName, boolean status, JPanel floor, JFrame home) {
 		final String finalTableName = tableName;
 		final boolean finalStatus = status;
-
+		final JFrame finalHome = home;
 		JButton btnTestButt = new JButton(finalTableName);
 		btnTestButt.setFont(new Font("Arial", Font.PLAIN, 15));
 		btnTestButt.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				UITableDetail tableDetail = new UITableDetail(finalTableName, finalStatus);
+				UITableDetail tableDetail = new UITableDetail(finalTableName, finalStatus, finalHome);
 				UIHome.this.dispose();
 			}
 		});
