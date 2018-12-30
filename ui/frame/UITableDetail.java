@@ -40,7 +40,7 @@ public class UITableDetail extends JFrame {
 	private JLabel lblTableName;
 	private JPanel pnStatus;
 	private JLabel lblStatus;
-	
+
 	private JFrame home;
 
 	// MARK:- Values
@@ -67,7 +67,7 @@ public class UITableDetail extends JFrame {
 		generateFrameSize();
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		showDialogWhenExit();
-		setBounds(this.frame_x, this.frame_y, 580, 642);
+		setBounds(this.frame_x, this.frame_y, 613, 642);
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.WHITE);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -75,7 +75,7 @@ public class UITableDetail extends JFrame {
 		contentPane.setLayout(null);
 
 		this.home = home;
-		
+
 		setVisible(true);
 
 		addPayButton(addBillTable(), this);
@@ -87,7 +87,7 @@ public class UITableDetail extends JFrame {
 
 	private Object[][] addBillTable() {
 		scrollPane = new JScrollPane(table);
-		scrollPane.setBounds(10, 11, 416, 581);
+		scrollPane.setBounds(10, 11, 457, 581);
 		contentPane.add(scrollPane);
 
 		table = new JTable();
@@ -97,17 +97,29 @@ public class UITableDetail extends JFrame {
 		table.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		table.setBorder(new LineBorder(SystemColor.activeCaptionBorder));
 
-		Object[][] orderList = { { "Chicken", "1", "50" }, { "Rice", "5", "50" }, { "Beer", "10", "50" },
-				{ null, null, null }, { null, null, null }, { null, null, null }, { null, null, null },
-				{ null, null, null }, { null, null, null }, { null, null, null }, { null, null, null },
-				{ null, null, null }, { null, null, null }, { null, null, null }, { null, null, null },
-				{ null, null, null }, { null, null, null }, { null, null, null }, { null, null, null },
-				{ null, null, null } };
+		Object[][] orderList = { { "Chicken", "50", "1", "10", new Integer(0) },
+				{ "Rice", "10", "5", "5", new Integer(0) }, { "Beer", "5", "10", "0", new Integer(0) },
+				{ null, null, null, null, null }, { null, null, null, null, null }, { null, null, null, null, null },
+				{ null, null, null, null, null }, { null, null, null, null, null }, { null, null, null, null, null },
+				{ null, null, null, null, null }, { null, null, null, null, null }, { null, null, null, null, null },
+				{ null, null, null, null, null }, { null, null, null, null, null }, { null, null, null, null, null },
+				{ null, null, null, null, null }, { null, null, null, null, null }, { null, null, null, null, null },
+				{ null, null, null, null, null }, { null, null, null, null, null }, };
 
-		table.setModel(new DefaultTableModel(orderList, new String[] { "Food ", "Amount", "Price" }));
-		table.getColumnModel().getColumn(0).setPreferredWidth(104);
-		table.getColumnModel().getColumn(1).setPreferredWidth(49);
-		table.getColumnModel().getColumn(2).setPreferredWidth(49);
+		for (Object[] o : orderList) {
+			if (o[0] != null) {
+				o[4] = Integer.parseInt((String) o[2]) * Integer.parseInt((String) o[1])
+						* (100 - Integer.parseInt((String) o[3])) / 100;
+			}
+		}
+
+		table.setModel(
+				new DefaultTableModel(orderList, new String[] { "Food", "Amount", "Price", "Discount", "Subtotal" }));
+		table.getColumnModel().getColumn(0).setPreferredWidth(106);
+		table.getColumnModel().getColumn(1).setPreferredWidth(40);
+		table.getColumnModel().getColumn(2).setPreferredWidth(40);
+		table.getColumnModel().getColumn(3).setPreferredWidth(37);
+		table.getColumnModel().getColumn(4).setPreferredWidth(32);
 
 		table.getTableHeader().setFont(new Font("Arial", Font.BOLD, 15));
 		table.getTableHeader().setReorderingAllowed(false);
@@ -141,7 +153,7 @@ public class UITableDetail extends JFrame {
 
 		btnPayButton.setBackground(new Color(102, 204, 102));
 
-		btnPayButton.setBounds(436, 419, 120, 58);
+		btnPayButton.setBounds(477, 419, 120, 58);
 		contentPane.add(btnPayButton);
 	}
 
@@ -164,7 +176,7 @@ public class UITableDetail extends JFrame {
 				}
 			}
 		});
-		btnCancel.setBounds(436, 488, 120, 58);
+		btnCancel.setBounds(477, 488, 120, 58);
 		btnCancel.setBackground(new Color(255, 102, 102));
 
 		contentPane.add(btnCancel);
@@ -173,7 +185,7 @@ public class UITableDetail extends JFrame {
 	}
 
 	private void addBackButton() {
-		
+
 		// BUTTON ACTION: BACK TO HOME
 		btnBack = new JButton("\u2190");
 		btnBack.addMouseListener(new MouseAdapter() {
@@ -185,7 +197,7 @@ public class UITableDetail extends JFrame {
 			}
 		});
 		btnBack.setFont(new Font("Tahoma", Font.BOLD, 24));
-		btnBack.setBounds(436, 557, 118, 35);
+		btnBack.setBounds(477, 557, 118, 35);
 		contentPane.add(btnBack);
 	}
 
@@ -195,7 +207,7 @@ public class UITableDetail extends JFrame {
 		// LABEL: Show table's name
 		pnTableName = new JPanel();
 		pnTableName.setBorder(new LineBorder(SystemColor.activeCaptionBorder));
-		pnTableName.setBounds(436, 11, 120, 40);
+		pnTableName.setBounds(477, 11, 120, 40);
 		contentPane.add(pnTableName);
 		pnTableName.setLayout(null);
 		{
@@ -209,7 +221,7 @@ public class UITableDetail extends JFrame {
 		// LABEL: Show table's status
 		pnStatus = new JPanel();
 		pnStatus.setBorder(new LineBorder(SystemColor.activeCaptionBorder));
-		pnStatus.setBounds(436, 64, 120, 40);
+		pnStatus.setBounds(477, 64, 120, 40);
 		contentPane.add(pnStatus);
 		pnStatus.setLayout(null);
 		{
@@ -236,9 +248,8 @@ public class UITableDetail extends JFrame {
 			@Override
 			public void windowClosing(WindowEvent we) {
 				String ObjButtons[] = { "Yes", "No" };
-				int PromptResult = JOptionPane.showOptionDialog(null, "Back to home?",
-						"Smart Restaurant", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, ObjButtons,
-						ObjButtons[1]);
+				int PromptResult = JOptionPane.showOptionDialog(null, "Back to home?", "Smart Restaurant",
+						JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, ObjButtons, ObjButtons[1]);
 				if (PromptResult == JOptionPane.YES_OPTION) {
 					UITableDetail.this.dispose();
 					home.setVisible(true);

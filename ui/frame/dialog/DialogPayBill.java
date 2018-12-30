@@ -49,7 +49,7 @@ public class DialogPayBill extends JDialog {
 	 */
 	public DialogPayBill(Object[][] orderList, JFrame frame) {
 		setResizable(false);
-		
+
 		final JFrame finalFrame = frame;
 		setTitle("Bill Confirm");
 		setBounds(100, 100, 487, 540);
@@ -135,7 +135,7 @@ public class DialogPayBill extends JDialog {
 		lblDate.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblDate.setBounds(345, 84, 80, 14);
 		pnBill.add(lblDate);
-		
+
 		lblWaiter = new JLabel("Waiter:");
 		lblWaiter.setBounds(23, 84, 58, 14);
 		pnBill.add(lblWaiter);
@@ -158,14 +158,17 @@ public class DialogPayBill extends JDialog {
 		table.setBackground(SystemColor.desktop);
 		scrollPane.setViewportView(table);
 		table.setBorder(new LineBorder(SystemColor.activeCaptionBorder));
-		table.setModel(new DefaultTableModel(orderList, new String[] { "Food ", "Amount", "Price" }));
+		table.setModel(
+				new DefaultTableModel(orderList, new String[] { "Food ", "Price", "Amount", "Discount", "Subtotal" }));
 
 		table.getTableHeader().setFont(new Font("Arial", Font.BOLD, 12));
-	    table.getTableHeader().setReorderingAllowed(false);
-	    
-		table.getColumnModel().getColumn(0).setPreferredWidth(104);
-		table.getColumnModel().getColumn(1).setPreferredWidth(49);
-		table.getColumnModel().getColumn(2).setPreferredWidth(49);
+		table.getTableHeader().setReorderingAllowed(false);
+
+		table.getColumnModel().getColumn(0).setPreferredWidth(106);
+		table.getColumnModel().getColumn(1).setPreferredWidth(32);
+		table.getColumnModel().getColumn(2).setPreferredWidth(32);
+		table.getColumnModel().getColumn(3).setPreferredWidth(32);
+		table.getColumnModel().getColumn(4).setPreferredWidth(32);
 
 	}
 
@@ -177,21 +180,21 @@ public class DialogPayBill extends JDialog {
 				numRow++;
 			}
 		}
-		Object[][] tmpList = new Object[numRow + 1][3];
+		Object[][] tmpList = new Object[numRow + 1][5];
 		int j = 0;
 		int sumAmount = 0;
-		int sumPrice = 0;
+		int sumTotal = 0;
 		for (int i = 0; i < defaultTable.length; i++) {
 			if (defaultTable[i][0] != null) {
 				tmpList[j] = defaultTable[i];
-				sumAmount+= Integer.parseInt(defaultTable[i][1].toString());
-				sumPrice+= Integer.parseInt(defaultTable[i][2].toString());
+				sumAmount += Integer.parseInt(defaultTable[i][2].toString());
+				sumTotal += Integer.parseInt(defaultTable[i][4].toString());
 				j++;
 			}
 		}
 		tmpList[j][0] = "TOTAL";
-		tmpList[j][1] = sumAmount;
-		tmpList[j][2] = sumPrice;
+		tmpList[j][2] = sumAmount;
+		tmpList[j][4] = sumTotal;
 		return tmpList;
 	}
 }
