@@ -1,4 +1,4 @@
-package com.view.ui.frame;
+package com.view.ui.frame.dialog;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -18,6 +18,9 @@ import javax.swing.border.LineBorder;
 import java.awt.SystemColor;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+
+import com.view.ui.frame.UIHome;
+
 import javax.swing.JScrollPane;
 
 public class DialogPayBill extends JDialog {
@@ -80,9 +83,8 @@ public class DialogPayBill extends JDialog {
 							System.out.println("Print bill");
 						else
 							System.out.println("No print bill");
-						finalFrame.setVisible(false);
+						finalFrame.dispose();
 						DialogPayBill.this.dispose();
-						
 						UIHome home = new UIHome();
 
 					}

@@ -7,10 +7,19 @@ import javax.swing.border.EmptyBorder;
 import java.awt.EventQueue;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
 import javax.swing.border.LineBorder;
+
+import com.model.business.models.Table;
+
 import java.awt.SystemColor;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 
 @SuppressWarnings("serial")
 public class UIHome extends JFrame {
@@ -19,6 +28,12 @@ public class UIHome extends JFrame {
 	private JPanel contentPane;
 	private JPanel pnInfo;
 	private JPanel pnTables;
+
+	private JTabbedPane tabbedPane;
+
+	private JPanel pnFirstFloor;
+	private JPanel pnSecondFloor;
+	private JPanel pnThirdFloor;
 
 	// MARK:- Values
 	private int frame_x;
@@ -43,7 +58,8 @@ public class UIHome extends JFrame {
 		setTitle("Express Waiter");
 		setResizable(false);
 		generateFrameSize();
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		showDialogWhenExit();
 		setBounds(this.frame_x, this.frame_y, this.frame_width, this.frame_height);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -53,7 +69,17 @@ public class UIHome extends JFrame {
 
 		addPanelTable();
 		addPanelInfo();
-		addTestTable("Table 12", false, this);
+
+		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		tabbedPane.setFont(new Font("Arial", Font.BOLD, 16));
+
+		pnFirstFloor = new JPanel();
+		addFloorPane("Floor 1", pnFirstFloor);
+		pnSecondFloor = new JPanel();
+		addFloorPane("Floor 2", pnSecondFloor);
+		pnThirdFloor = new JPanel();
+		addFloorPane("Floor 3", pnThirdFloor);
+
 	}
 
 	private void addPanelTable() {
@@ -63,6 +89,7 @@ public class UIHome extends JFrame {
 		pnTables.setBounds(10, 10, this.frame_width - 26, this.frame_height - 133);
 		contentPane.add(pnTables);
 		pnTables.setLayout(null);
+		pnTables.setVisible(false);
 	}
 
 	private void addPanelInfo() {
@@ -70,25 +97,61 @@ public class UIHome extends JFrame {
 		pnInfo.setBackground(Color.WHITE);
 		pnInfo.setBounds(10, pnTables.getHeight() + 23, this.frame_width - 26, 70);
 		contentPane.add(pnInfo);
+
+	}
+
+	private void addFloorPane(String paneName, JPanel pnFloor) {
+		tabbedPane.setBounds(10, 10, this.frame_width - 26, this.frame_height - 133);
+		tabbedPane.addTab(paneName, null, pnFloor, null);
+		contentPane.add(tabbedPane);
+		pnFloor.setLayout(new GridLayout(5, 4));
+	}
+
+	private void showDialogWhenExit() {
+		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent we) {
+				String ObjButtons[] = { "Yes", "No" };
+				int PromptResult = JOptionPane.showOptionDialog(null, "Are you sure you want to exit?",
+						"Smart Restaurant", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, ObjButtons,
+						ObjButtons[1]);
+				if (PromptResult == JOptionPane.YES_OPTION) {
+					System.exit(0);
+				}
+			}
+		});
 	}
 
 	// NOTE: FUNCTION FOR TESTING ONLY
-	private void addTestTable(String tableName, boolean status, JFrame frame) {
-		final String finalTableName = tableName;
-		final boolean finalStatus = status;
-		final JFrame finalHome = frame;
-		JButton btnTestButt = new JButton(finalTableName);
-		btnTestButt.setFont(new Font("Arial", Font.PLAIN, 15));
-		btnTestButt.addMouseListener(new MouseAdapter() {
+
+	public void addTable(Table table) {
+		final String finalTableName = "Bàn " + table.getName();
+		final boolean finalStatus = table.getIsAvailable();
+		JButton btnTable = new JButton(finalTableName);
+		btnTable.setFont(new Font("Arial", Font.PLAIN, 15));
+		btnTable.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				UITableDetail frame = new UITableDetail(finalTableName, finalStatus, finalHome);
+				UITableDetail frame = new UITableDetail(finalTableName, finalStatus, UIHome.this);
 				setVisible(false);
 				frame.setVisible(true);
 			}
 		});
-		btnTestButt.setBounds(10, 10, 123, 70);
-		pnTables.add(btnTestButt);
+		btnTable.setBounds(10, 10, 123, 70);
+		btnTable.setPreferredSize(new Dimension(160, 80));
+		switch (table.getFloor_id()) {
+		case 0:
+			pnFirstFloor.add(btnTable);
+			break;
+		case 1:
+			pnSecondFloor.add(btnTable);
+			break;
+		case 2:
+			pnThirdFloor.add(btnTable);
+			break;
+		}
+		this.notifyGridChanged();
 	}
 
 	// MARK:- Calculating methods
@@ -102,4 +165,9 @@ public class UIHome extends JFrame {
 		this.frame_height = (int) (screen_height * SCALE_HEIGHT);
 	}
 
+	// MARK:- notify component's changes
+	private void notifyGridChanged() {
+		pnTables.revalidate();
+		pnTables.repaint();
+	}
 }
