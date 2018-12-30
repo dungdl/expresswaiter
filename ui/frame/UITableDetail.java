@@ -13,9 +13,13 @@ import javax.swing.border.LineBorder;
 import java.awt.SystemColor;
 import java.awt.Font;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+
+import com.view.ui.frame.dialog.DialogPayBill;
+
 import java.awt.Color;
 import javax.swing.JScrollPane;
 import java.awt.event.ActionListener;
@@ -52,7 +56,7 @@ public class UITableDetail extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public UITableDetail(String tableName, boolean paid, JFrame frame) {
+	public UITableDetail(String tableName, boolean paid) {
 		setTitle(tableName);
 		setResizable(false);
 		generateFrameSize();
@@ -62,10 +66,12 @@ public class UITableDetail extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		
+		setVisible(true);
 
 		addPayButton(addBillTable(), this);
-		addCancelButton(this);
-		addBackButton(frame);
+		addCancelButton();
+		addBackButton();
 		addInfoBar(tableName, paid);
 
 	}
@@ -132,19 +138,21 @@ public class UITableDetail extends JFrame {
 	}
 
 	// Add cancel button (nut huy don)
-	private void addCancelButton(JFrame frame) {
-		final JFrame finalFrame = frame;
+	private void addCancelButton() {
+
 		btnCancel = new JButton("H\u1EE7y \u0110\u01A1n");
 		btnCancel.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		btnCancel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				try {
-					DialogCancelBill dialog = new DialogCancelBill(finalFrame);
-					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-					dialog.setVisible(true);
-				} catch (Exception ex) {
-					ex.printStackTrace();
+				
+				String ObjButtons[] = { "Yes", "No" };
+				int PromptResult = JOptionPane.showOptionDialog(null, "Are you sure you want to cancel this bill?",
+						"Smart Restaurant", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null,
+						ObjButtons, ObjButtons[1]);
+				if (PromptResult == JOptionPane.YES_OPTION) {
+					UITableDetail.this.dispose();
+					UIHome home = new UIHome();
 				}
 			}
 		});
@@ -156,15 +164,17 @@ public class UITableDetail extends JFrame {
 		setVisible(true);
 	}
 
-	private void addBackButton(JFrame frame) {
-		final JFrame finalHome = frame;
+	private void addBackButton() {
+
 		// BUTTON ACTION: BACK TO HOME
 		btnBack = new JButton("\u2190");
 		btnBack.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				setVisible(false);
-				finalHome.setVisible(true);
+				
+				UITableDetail.this.dispose();
+				UIHome home = new UIHome();
 			}
 		});
 		btnBack.setFont(new Font("Tahoma", Font.BOLD, 24));
