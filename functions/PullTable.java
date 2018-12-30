@@ -8,14 +8,19 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.model.business.models.Table;
+import com.view.ui.frame.UIHome;
 
 public class PullTable {
 	// MARK:- Values
 	private ArrayList<Table> listTable;
 
+	UIHome home;
+
 	// MARK:- Constructor
-	public PullTable() {
+	public PullTable(UIHome home) {
 		this.listTable = new ArrayList<Table>();
+
+		this.home = home;
 		interactWithDb();
 	}
 
@@ -29,7 +34,7 @@ public class PullTable {
 			public void onDataChange(DataSnapshot snapshot) {
 				for (DataSnapshot data : snapshot.getChildren()) {
 					Table table = data.getValue(Table.class);
-					System.out.println(table.getName());
+					PullTable.this.home.addTable(table);
 				}
 			}
 
