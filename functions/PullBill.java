@@ -9,15 +9,18 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.model.business.models.Bill;
 import com.view.ui.frame.UIHome;
+import com.view.ui.frame.UITableDetail;
 
 public class PullBill {
 
 	// MARK:- Values
-	private ArrayList<Bill> listBill;
+	private UITableDetail ui_tableDetail;
+	private String tableId;
 
 	// MARK:- Constructor:
-	public PullBill() {
-		this.listBill = new ArrayList<Bill>();
+	public PullBill(UITableDetail ui_tableDetail, String tableId) {
+		this.ui_tableDetail = ui_tableDetail;
+		this.tableId = tableId;
 		interactWithDb();
 	}
 	
@@ -45,7 +48,11 @@ public class PullBill {
 
 			public void onChildAdded(DataSnapshot snapshot, String previousChildName) {
 				Bill bill = snapshot.getValue(Bill.class);
-				System.out.println(bill.getListOrder().size());
+				if (bill.getTableId().equals(PullBill.this.tableId) && !bill.getChecked()) {
+					System.out.println(bill.getDate());
+					System.out.println(bill.getWaiter());
+					System.out.println(bill.getId());
+				}
 			}
 
 			public void onCancelled(DatabaseError error) {
