@@ -21,7 +21,7 @@ import javax.swing.SwingConstants;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-import com.view.ui.frame.dialog.DialogPayBill;
+import com.view.ui.dialog.DialogPaidBill;
 
 import java.awt.Color;
 import javax.swing.JScrollPane;
@@ -33,7 +33,7 @@ public class UITableDetail extends JFrame {
 	// MARK:- Components
 	private JPanel contentPane;
 	private JTable table;
-	private JButton btnPayButton;
+	private JButton btnPaid;
 	private JButton btnBack;
 	private JButton btnCancel;
 	private JPanel pnTableName;
@@ -61,7 +61,7 @@ public class UITableDetail extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public UITableDetail(String tableName, boolean paid, JFrame home) {
+	public UITableDetail(String tableName, boolean paid, JFrame home, String tableId) {
 		setTitle(tableName);
 		setResizable(false);
 		generateFrameSize();
@@ -78,7 +78,7 @@ public class UITableDetail extends JFrame {
 
 		setVisible(true);
 
-		addPayButton(addBillTable(), this);
+		addPaidButton(addBillTable(), this);
 		addCancelButton();
 		addBackButton();
 		addInfoBar(tableName, paid);
@@ -128,21 +128,33 @@ public class UITableDetail extends JFrame {
 		return orderList;
 	}
 
+	public void addBtnPaidActionListener(ActionListener listener) {
+		this.btnPaid.addActionListener(listener);
+	}
+	
+	public void addBtnCancelActionListener(ActionListener listener) {
+		this.btnCancel.addActionListener(listener);
+	}
+	
+	public void addBtnBackActionListener(ActionListener listener) {
+		this.btnBack.addActionListener(listener);
+	}
+	
 	// Add pay button (nut thanh toan)
-	private void addPayButton(Object[][] orderList, JFrame frame) {
+	private void addPaidButton(Object[][] orderList, JFrame frame) {
 		final Object[][] finalOrderList = orderList;
 		final JFrame finalFrame = frame;
-		btnPayButton = new JButton("Thanh To\u00E1n");
-		btnPayButton.addActionListener(new ActionListener() {
+		btnPaid = new JButton("Thanh To\u00E1n");
+		btnPaid.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 			}
 		});
-		btnPayButton.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		btnPayButton.addMouseListener(new MouseAdapter() {
+		btnPaid.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		btnPaid.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				try {
-					DialogPayBill dialog = new DialogPayBill(finalOrderList, finalFrame);
+					DialogPaidBill dialog = new DialogPaidBill(finalOrderList, finalFrame);
 					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 					dialog.setVisible(true);
 				} catch (Exception ex) {
@@ -151,10 +163,9 @@ public class UITableDetail extends JFrame {
 			}
 		});
 
-		btnPayButton.setBackground(new Color(102, 204, 102));
-
-		btnPayButton.setBounds(477, 419, 120, 58);
-		contentPane.add(btnPayButton);
+		btnPaid.setBackground(new Color(102, 204, 102));
+		btnPaid.setBounds(477, 419, 120, 58);
+		contentPane.add(btnPaid);
 	}
 
 	// Add cancel button (nut huy don)
@@ -226,11 +237,11 @@ public class UITableDetail extends JFrame {
 		pnStatus.setLayout(null);
 		{
 			if (paid) {
-				lblStatus = new JLabel("PAID");
+				lblStatus = new JLabel("FREE");
 				pnStatus.setBackground(new Color(182, 182, 182));
 
 			} else {
-				lblStatus = new JLabel("NOT PAID");
+				lblStatus = new JLabel("BUSY");
 				pnStatus.setBackground(new Color(253, 243, 121));
 			}
 			lblStatus.setFont(new Font("Arial", Font.PLAIN, 15));
