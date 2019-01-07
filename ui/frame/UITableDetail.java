@@ -21,8 +21,6 @@ import javax.swing.SwingConstants;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-import com.view.ui.frame.dialog.DialogPayBill;
-
 import java.awt.Color;
 import javax.swing.JScrollPane;
 import java.awt.event.ActionListener;
@@ -32,7 +30,7 @@ public class UITableDetail extends JFrame {
 
 	// MARK:- Components
 	private JPanel contentPane;
-	private JTable table;
+	private JTable tblFood;
 	private JButton btnPayButton;
 	private JButton btnBack;
 	private JButton btnCancel;
@@ -40,7 +38,7 @@ public class UITableDetail extends JFrame {
 	private JLabel lblTableName;
 	private JPanel pnStatus;
 	private JLabel lblStatus;
-	
+	private JScrollPane scrollPane;
 	private JFrame home;
 
 	// MARK:- Values
@@ -50,18 +48,19 @@ public class UITableDetail extends JFrame {
 	private int frame_height;
 	private double screen_width;
 	private double screen_height;
+	private String tableId;
 
 	// MARK:- Constants
 	private final double SCALE_X = 0.15625;
 	private final double SCALE_Y = 0.046296296296296294;
 	private final double SCALE_HEIGHT = 0.9259259259259259;
 	private final double SCALE_WIDTH = 0.7291666666666666;
-	private JScrollPane scrollPane;
 
 	/**
 	 * Create the frame.
 	 */
-	public UITableDetail(String tableName, boolean paid, JFrame home) {
+	public UITableDetail(String tableName, boolean paid, JFrame home, String tableId) {
+		this.tableId = tableId;
 		setTitle(tableName);
 		setResizable(false);
 		generateFrameSize();
@@ -86,16 +85,16 @@ public class UITableDetail extends JFrame {
 	}
 
 	private Object[][] addBillTable() {
-		scrollPane = new JScrollPane(table);
+		scrollPane = new JScrollPane(tblFood);
 		scrollPane.setBounds(10, 11, 416, 581);
 		contentPane.add(scrollPane);
 
-		table = new JTable();
-		table.setBackground(Color.WHITE);
-		scrollPane.setViewportView(table);
-		table.setCellSelectionEnabled(true);
-		table.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		table.setBorder(new LineBorder(SystemColor.activeCaptionBorder));
+		tblFood = new JTable();
+		tblFood.setBackground(Color.WHITE);
+		scrollPane.setViewportView(tblFood);
+		tblFood.setCellSelectionEnabled(true);
+		tblFood.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		tblFood.setBorder(new LineBorder(SystemColor.activeCaptionBorder));
 
 		Object[][] orderList = { { "Chicken", "1", "50" }, { "Rice", "5", "50" }, { "Beer", "10", "50" },
 				{ null, null, null }, { null, null, null }, { null, null, null }, { null, null, null },
@@ -104,14 +103,14 @@ public class UITableDetail extends JFrame {
 				{ null, null, null }, { null, null, null }, { null, null, null }, { null, null, null },
 				{ null, null, null } };
 
-		table.setModel(new DefaultTableModel(orderList, new String[] { "Food ", "Amount", "Price" }));
-		table.getColumnModel().getColumn(0).setPreferredWidth(104);
-		table.getColumnModel().getColumn(1).setPreferredWidth(49);
-		table.getColumnModel().getColumn(2).setPreferredWidth(49);
+		tblFood.setModel(new DefaultTableModel(orderList, new String[] { "Food ", "Amount", "Price" }));
+		tblFood.getColumnModel().getColumn(0).setPreferredWidth(104);
+		tblFood.getColumnModel().getColumn(1).setPreferredWidth(49);
+		tblFood.getColumnModel().getColumn(2).setPreferredWidth(49);
 
-		table.getTableHeader().setFont(new Font("Arial", Font.BOLD, 15));
-		table.getTableHeader().setReorderingAllowed(false);
-		table.setRowHeight(25);
+		tblFood.getTableHeader().setFont(new Font("Arial", Font.BOLD, 15));
+		tblFood.getTableHeader().setReorderingAllowed(false);
+		tblFood.setRowHeight(25);
 
 		return orderList;
 	}
