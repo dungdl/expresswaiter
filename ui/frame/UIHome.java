@@ -4,14 +4,14 @@ import java.awt.Toolkit;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import java.awt.EventQueue;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-import javax.swing.border.LineBorder;
-import java.awt.SystemColor;
+import com.model.business.models.Table;
+import com.view.ui.panel.PanelInfo;
+
 import java.awt.Font;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -23,13 +23,12 @@ public class UIHome extends JFrame {
 	// MARK:- Components
 	private JPanel contentPane;
 	private JPanel pnInfo;
-	private JPanel pnTables;
-
+	private JScrollPane scrollPane;
 	private JTabbedPane tabbedPane;
 
-	private JPanel pn1F;
-	private JPanel pn2F;
-	private JPanel pn3F;
+	private JPanel pnFirstFloor;
+	private JPanel pnSecondFloor;
+	private JPanel pnThirdFloor;
 
 	// MARK:- Values
 	private int frame_x;
@@ -44,6 +43,7 @@ public class UIHome extends JFrame {
 	private final double SCALE_Y = 0.046296296296296294;
 	private final double SCALE_WIDTH = 0.63982430453;
 	private final double SCALE_HEIGHT = 0.86328125;
+	private JScrollBar scrollBar;
 
 	// MARK:- Constructor
 
@@ -63,54 +63,69 @@ public class UIHome extends JFrame {
 		contentPane.setLayout(null);
 		setVisible(true);
 
-		addPanelTable();
-		addPanelInfo();
-
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setFont(new Font("Arial", Font.BOLD, 16));
 
-		pn1F = new JPanel();
-		addFloorPane("Floor 1", pn1F);
-		pn2F = new JPanel();
-		addFloorPane("Floor 2", pn2F);
-		pn3F = new JPanel();
-		addFloorPane("Floor 3", pn3F);
+		pnFirstFloor = new JPanel();
+		addFloorPane("Floor 1", pnFirstFloor);
+		pnSecondFloor = new JPanel();
+		addFloorPane("Floor 2", pnSecondFloor);
+		pnThirdFloor = new JPanel();
+		addFloorPane("Floor 3", pnThirdFloor);
+		addPanelInfo();
 
-		addTestTable("Table 12", false, pn1F, this);
-		addTestTable("Table 11", true, pn1F, this);
-		addTestTable("Table 21", true, pn2F, this);
+//		addTable(new Table("uw", "ew", true, 0));
+//		addTable(new Table("uw", "ew", true, 0));
+//		addTable(new Table("uw", "ew", true, 0));
+//		addTable(new Table("uw", "ew", true, 0));
+//		addTable(new Table("uw", "ew", true, 0));
+//		addTable(new Table("uw", "ew", true, 0));
+//		addTable(new Table("uw", "ew", true, 0));
+//		addTable(new Table("uw", "ew", true, 0));
+//		addTable(new Table("uw", "ew", true, 0));
+//		addTable(new Table("uw", "ew", true, 0));
+//		addTable(new Table("uw", "ew", true, 0));
+//		addTable(new Table("uw", "ew", true, 0));
+//		addTable(new Table("uw", "ew", true, 0));
+//		addTable(new Table("uw", "ew", true, 0));
+//		addTable(new Table("uw", "ew", true, 0));
+		
+		
 
-	}
-
-	private void addPanelTable() {
-		pnTables = new JPanel();
-		pnTables.setBackground(Color.WHITE);
-		pnTables.setBorder(new LineBorder(SystemColor.activeCaptionBorder));
-		pnTables.setBounds(10, 10, this.frame_width - 26, this.frame_height - 133);
-		contentPane.add(pnTables);
-		pnTables.setLayout(null);
-		pnTables.setVisible(false);
 	}
 
 	private void addPanelInfo() {
 		pnInfo = new PanelInfo();
 		pnInfo.setBackground(Color.WHITE);
-		pnInfo.setBounds(10, pnTables.getHeight() + 23, this.frame_width - 26, 70);
+		pnInfo.setBounds(10, tabbedPane.getHeight() + 23, this.frame_width - 26, 70);
 		contentPane.add(pnInfo);
 
+		notifyGridChanged();
 	}
 
 	private void addFloorPane(String paneName, JPanel pnFloor) {
+
+		pnFloor.setBackground(Color.WHITE);
+		pnFloor.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10));
+		pnFloor.setPreferredSize(new Dimension(this.frame_width - 52, 1000));
+
+		scrollPane = new JScrollPane();
+		scrollPane.setViewportView(pnFloor);
+		scrollBar = new JScrollBar(JScrollBar.VERTICAL) {
+			@Override
+			public boolean isVisible() {
+				return true;
+			}
+		};
+		scrollPane.setVerticalScrollBar(scrollBar);
+		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+
 		tabbedPane.setBounds(10, 10, this.frame_width - 26, this.frame_height - 133);
-		tabbedPane.addTab(paneName, null, pnFloor, null);
+		tabbedPane.addTab(paneName, null, scrollPane, null);
+
 		contentPane.add(tabbedPane);
-		{
-			FlowLayout flowLayout = (FlowLayout) pnFloor.getLayout();
-			flowLayout.setAlignOnBaseline(true);
-			flowLayout.setVgap(10);
-			flowLayout.setHgap(10);
-			flowLayout.setAlignment(FlowLayout.LEFT);
-		}
+
+		notifyGridChanged();
 	}
 
 	private void showDialogWhenExit() {
@@ -120,8 +135,8 @@ public class UIHome extends JFrame {
 			public void windowClosing(WindowEvent we) {
 				String ObjButtons[] = { "Yes", "No" };
 				int PromptResult = JOptionPane.showOptionDialog(null, "Are you sure you want to exit?",
-						"Smart Restaurant", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null,
-						ObjButtons, ObjButtons[1]);
+						"Smart Restaurant", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, ObjButtons,
+						ObjButtons[1]);
 				if (PromptResult == JOptionPane.YES_OPTION) {
 					System.exit(0);
 				}
@@ -130,23 +145,34 @@ public class UIHome extends JFrame {
 	}
 
 	// NOTE: FUNCTION FOR TESTING ONLY
-	private void addTestTable(String tableName, boolean status, JPanel floor, JFrame home) {
-		final String finalTableName = tableName;
-		final boolean finalStatus = status;
-		final JFrame finalHome = home;
-		JButton btnTestButt = new JButton(finalTableName);
-		btnTestButt.setFont(new Font("Arial", Font.PLAIN, 15));
-		btnTestButt.addMouseListener(new MouseAdapter() {
+
+	public void addTable(Table table) {
+		final String finalTableName = "Bàn " + table.getName();
+		final boolean finalStatus = table.isAvailable();
+		JButton btnTable = new JButton(finalTableName);
+		btnTable.setFont(new Font("Arial", Font.PLAIN, 15));
+		btnTable.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				UITableDetail tableDetail = new UITableDetail(finalTableName, finalStatus, finalHome);
-				UIHome.this.dispose();
+				UITableDetail frame = new UITableDetail(finalTableName, finalStatus, UIHome.this, "");
+				setVisible(false);
+				frame.setVisible(true);
 			}
 		});
-		btnTestButt.setBounds(10, 10, 123, 70);
-		btnTestButt.setPreferredSize(new Dimension(160, 80));
-		floor.add(btnTestButt);
-
+		btnTable.setBounds(10, 10, 123, 70);
+		btnTable.setPreferredSize(new Dimension((pnFirstFloor.getWidth() - 60) / 5, 80));
+		switch (table.getFloor_id()) {
+		case 0:
+			pnFirstFloor.add(btnTable);
+			break;
+		case 1:
+			pnSecondFloor.add(btnTable);
+			break;
+		case 2:
+			pnThirdFloor.add(btnTable);
+			break;
+		}
+		this.notifyGridChanged();
 	}
 
 	// MARK:- Calculating methods
@@ -158,5 +184,12 @@ public class UIHome extends JFrame {
 		this.frame_y = (int) (screen_height * SCALE_Y);
 		this.frame_width = (int) (screen_width * SCALE_WIDTH);
 		this.frame_height = (int) (screen_height * SCALE_HEIGHT);
+	}
+
+	// MARK:- notify component's changes
+	private void notifyGridChanged() {
+		this.revalidate();
+		this.repaint();
+
 	}
 }
