@@ -21,6 +21,9 @@ import javax.swing.SwingConstants;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+import com.model.business.functions.PullBill;
+import com.model.business.models.Bill;
+import com.model.data_access.DataRef;
 import com.view.ui.dialog.DialogPaidBill;
 
 import java.awt.Color;
@@ -40,8 +43,9 @@ public class UITableDetail extends JFrame {
 	private JLabel lblTableName;
 	private JPanel pnStatus;
 	private JLabel lblStatus;
-
 	private JFrame home;
+	private JScrollPane scrollPane;
+
 
 	// MARK:- Values
 	private int frame_x;
@@ -50,18 +54,20 @@ public class UITableDetail extends JFrame {
 	private int frame_height;
 	private double screen_width;
 	private double screen_height;
+	private String tableId;
+	private Bill bill;
 
 	// MARK:- Constants
 	private final double SCALE_X = 0.15625;
 	private final double SCALE_Y = 0.046296296296296294;
 	private final double SCALE_HEIGHT = 0.9259259259259259;
 	private final double SCALE_WIDTH = 0.7291666666666666;
-	private JScrollPane scrollPane;
-
 	/**
 	 * Create the frame.
 	 */
 	public UITableDetail(String tableName, boolean paid, JFrame home, String tableId) {
+		this.tableId = tableId;
+		PullBill pb = new PullBill(this, tableId, DataRef.createInstance().getBillRef());
 		setTitle(tableName);
 		setResizable(false);
 		generateFrameSize();
@@ -150,19 +156,6 @@ public class UITableDetail extends JFrame {
 			}
 		});
 		btnPaid.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		btnPaid.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				try {
-					DialogPaidBill dialog = new DialogPaidBill(finalOrderList, finalFrame);
-					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-					dialog.setVisible(true);
-				} catch (Exception ex) {
-					ex.printStackTrace();
-				}
-			}
-		});
-
 		btnPaid.setBackground(new Color(102, 204, 102));
 		btnPaid.setBounds(477, 419, 120, 58);
 		contentPane.add(btnPaid);
@@ -170,43 +163,17 @@ public class UITableDetail extends JFrame {
 
 	// Add cancel button (nut huy don)
 	private void addCancelButton() {
-
 		btnCancel = new JButton("H\u1EE7y \u0110\u01A1n");
 		btnCancel.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		btnCancel.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-
-				String ObjButtons[] = { "Yes", "No" };
-				int PromptResult = JOptionPane.showOptionDialog(null, "Are you sure you want to cancel this bill?",
-						"Smart Restaurant", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, ObjButtons,
-						ObjButtons[1]);
-				if (PromptResult == JOptionPane.YES_OPTION) {
-					UITableDetail.this.dispose();
-					UIHome home = new UIHome();
-				}
-			}
-		});
 		btnCancel.setBounds(477, 488, 120, 58);
 		btnCancel.setBackground(new Color(255, 102, 102));
-
 		contentPane.add(btnCancel);
-
 		setVisible(true);
 	}
 
 	private void addBackButton() {
-
 		// BUTTON ACTION: BACK TO HOME
 		btnBack = new JButton("\u2190");
-		btnBack.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-
-				UITableDetail.this.dispose();
-				home.setVisible(true);
-			}
-		});
 		btnBack.setFont(new Font("Tahoma", Font.BOLD, 24));
 		btnBack.setBounds(477, 557, 118, 35);
 		contentPane.add(btnBack);
@@ -238,11 +205,11 @@ public class UITableDetail extends JFrame {
 		{
 			if (paid) {
 				lblStatus = new JLabel("FREE");
-				pnStatus.setBackground(new Color(182, 182, 182));
+				pnStatus.setBackground(new Color(253, 243, 121));
 
 			} else {
 				lblStatus = new JLabel("BUSY");
-				pnStatus.setBackground(new Color(253, 243, 121));
+				pnStatus.setBackground(new Color(102, 204, 102));
 			}
 			lblStatus.setFont(new Font("Arial", Font.PLAIN, 15));
 			lblStatus.setHorizontalAlignment(SwingConstants.CENTER);
@@ -272,10 +239,13 @@ public class UITableDetail extends JFrame {
 	private void generateFrameSize() {
 		this.screen_width = Toolkit.getDefaultToolkit().getScreenSize().width;
 		this.screen_height = Toolkit.getDefaultToolkit().getScreenSize().height;
-
 		this.frame_x = (int) (screen_width * SCALE_X); //
 		this.frame_y = (int) (screen_height * SCALE_Y);
 		this.frame_width = (int) (screen_width * SCALE_WIDTH);
 		this.frame_height = (int) (screen_height * SCALE_HEIGHT);
+	}
+	
+	public void setBill(Bill bill) {
+		this.bill = bill;
 	}
 }
