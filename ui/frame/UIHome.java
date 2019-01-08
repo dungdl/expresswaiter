@@ -9,6 +9,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+import com.controller.TableDetailController;
 import com.model.business.models.Table;
 import com.view.ui.panel.PanelInfo;
 
@@ -73,22 +74,6 @@ public class UIHome extends JFrame {
 		pnThirdFloor = new JPanel();
 		addFloorPane("Floor 3", pnThirdFloor);
 		addPanelInfo();
-
-//		addTable(new Table("uw", "ew", true, 0));
-//		addTable(new Table("uw", "ew", true, 0));
-//		addTable(new Table("uw", "ew", true, 0));
-//		addTable(new Table("uw", "ew", true, 0));
-//		addTable(new Table("uw", "ew", true, 0));
-//		addTable(new Table("uw", "ew", true, 0));
-//		addTable(new Table("uw", "ew", true, 0));
-//		addTable(new Table("uw", "ew", true, 0));
-//		addTable(new Table("uw", "ew", true, 0));
-//		addTable(new Table("uw", "ew", true, 0));
-//		addTable(new Table("uw", "ew", true, 0));
-//		addTable(new Table("uw", "ew", true, 0));
-//		addTable(new Table("uw", "ew", true, 0));
-//		addTable(new Table("uw", "ew", true, 0));
-//		addTable(new Table("uw", "ew", true, 0));
 		
 		
 
@@ -147,14 +132,21 @@ public class UIHome extends JFrame {
 	// NOTE: FUNCTION FOR TESTING ONLY
 
 	public void addTable(Table table) {
-		final String finalTableName = "Bàn " + table.getName();
-		final boolean finalStatus = table.isAvailable();
+		final String finalTableName = "BÃ n " + table.getName();
+		final boolean finalStatus = table.getIsAvailable();
 		JButton btnTable = new JButton(finalTableName);
+		//change color
+		if(finalStatus) {
+			btnTable.setBackground(new Color(253, 243, 121));
+		}else {
+			btnTable.setBackground(new Color(102, 204, 102));
+		}
 		btnTable.setFont(new Font("Arial", Font.PLAIN, 15));
 		btnTable.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				UITableDetail frame = new UITableDetail(finalTableName, finalStatus, UIHome.this, "");
+				TableDetailController controller = new TableDetailController(frame, UIHome.this);
 				setVisible(false);
 				frame.setVisible(true);
 			}
