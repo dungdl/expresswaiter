@@ -52,7 +52,7 @@ public class PanelInfo extends JPanel {
 		pnEmpty.setBorder(new LineBorder(SystemColor.scrollbar));
 		pnEmpty.setBackground(new Color(102, 204, 102));
 
-		lblEmpty = new JLabel("Free");
+		lblEmpty = new JLabel("Tr\u1ED1ng");
 		lblEmpty.setBounds(7, 6, 106, 28);
 		lblEmpty.setFont(new Font("Tahoma", Font.PLAIN, 15));
 
@@ -74,7 +74,7 @@ public class PanelInfo extends JPanel {
 		pnBusy.setBorder(new LineBorder(SystemColor.scrollbar));
 		pnBusy.setBackground(new Color(255, 102, 102));
 
-		lblBusy = new JLabel("Busy");
+		lblBusy = new JLabel("B\u1eadn");
 		lblBusy.setBounds(7, 6, 106, 28);
 		lblBusy.setFont(new Font("Tahoma", Font.PLAIN, 15));
 
@@ -95,7 +95,7 @@ public class PanelInfo extends JPanel {
 		pnRepair.setBorder(new LineBorder(SystemColor.scrollbar));
 		pnRepair.setBackground(new Color(255, 255, 153));
 
-		lblRepair = new JLabel("Repair");
+		lblRepair = new JLabel("B\u1EA3o tr\u00EC");
 		lblRepair.setBounds(8, 6, 106, 28);
 		lblRepair.setFont(new Font("Tahoma", Font.PLAIN, 15));
 
