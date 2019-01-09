@@ -74,11 +74,11 @@ public class UIHome extends JFrame {
 		tabbedPane.setFont(new Font("Arial", Font.BOLD, 16));
 
 		pnFirstFloor = new JPanel();
-		addFloorPane("Floor 1", pnFirstFloor);
+		addFloorPane(" T\u1ea7ng 1 ", pnFirstFloor);
 		pnSecondFloor = new JPanel();
-		addFloorPane("Floor 2", pnSecondFloor);
+		addFloorPane(" T\u1ea7ng 2 ", pnSecondFloor);
 		pnThirdFloor = new JPanel();
-		addFloorPane("Floor 3", pnThirdFloor);
+		addFloorPane(" T\u1ea7ng 3 ", pnThirdFloor);
 
 		this.busy = 0;
 		this.free = 0;
@@ -126,9 +126,9 @@ public class UIHome extends JFrame {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent we) {
-				String ObjButtons[] = { "Yes", "No" };
-				int PromptResult = JOptionPane.showOptionDialog(null, "Are you sure you want to exit?",
-						"Smart Restaurant", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, ObjButtons,
+				String ObjButtons[] = { "C\u00F3", "Kh\u00F4ng" };
+				int PromptResult = JOptionPane.showOptionDialog(null, "B\u1EA1n th\u1EF1c s\u1EF1 mu\u1ED1n tho\u00E1t?",
+						"Nh\u00E0 h\u00E0ng th\u00F4ng minh", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, ObjButtons,
 						ObjButtons[1]);
 				if (PromptResult == JOptionPane.YES_OPTION) {
 					System.exit(0);
