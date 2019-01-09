@@ -23,12 +23,11 @@ public class PaidBillController {
 	private void listenOkBtn() {
 		dialogPaidBill.addBtnOkListener(new ActionListener() {
 
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (dialogPaidBill.getRbPrintBill().isSelected())
-					System.out.println("Print bill");
+					System.out.println("In h\u00F3a \u0111\u01A1n");
 				else
-					System.out.println("No print bill");
+					System.out.println("Kh\u00F4ng in h\u00F3a \u0111\u01A1n");
 
 				PushBill.push(DataRef.createInstance().getBillRef(), uiTableDetail.getBill(),
 						DataRef.createInstance().getTableRef());
@@ -44,7 +43,6 @@ public class PaidBillController {
 	private void listenCancelBtn() {
 		dialogPaidBill.addBtnCancelListener(new ActionListener() {
 
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				dialogPaidBill.setVisible(false);
 			}
