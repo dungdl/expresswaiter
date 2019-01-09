@@ -10,7 +10,10 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import com.controller.TableDetailController;
+import com.google.firebase.database.DatabaseReference;
+import com.model.business.functions.PullTable;
 import com.model.business.models.Table;
+import com.model.data_access.DataRef;
 import com.view.ui.panel.PanelInfo;
 
 import java.awt.Font;
@@ -23,7 +26,7 @@ public class UIHome extends JFrame {
 
 	// MARK:- Components
 	private JPanel contentPane;
-	private JPanel pnInfo;
+	private PanelInfo pnInfo;
 	private JScrollPane scrollPane;
 	private JTabbedPane tabbedPane;
 
@@ -38,6 +41,9 @@ public class UIHome extends JFrame {
 	private int frame_height;
 	private double screen_width;
 	private double screen_height;
+	private boolean first_time;
+	private int busy;
+	private int free;
 
 	// MARK:- Constants
 	private final double SCALE_X = 0.15625;
@@ -52,7 +58,8 @@ public class UIHome extends JFrame {
 	 * Create the frame.
 	 */
 	public UIHome() {
-		setTitle("Express Waiter");
+		first_time = true;
+		setTitle("Express Accountant");
 		setResizable(false);
 		generateFrameSize();
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -73,18 +80,20 @@ public class UIHome extends JFrame {
 		addFloorPane("Floor 2", pnSecondFloor);
 		pnThirdFloor = new JPanel();
 		addFloorPane("Floor 3", pnThirdFloor);
+
+		this.busy = 0;
+		this.free = 0;
+
+		new PullTable(this, DataRef.createInstance().getTableRef());
 		addPanelInfo();
-		
-		
 
 	}
 
 	private void addPanelInfo() {
-		pnInfo = new PanelInfo();
+		pnInfo = new PanelInfo(this.free, this.busy);
 		pnInfo.setBackground(Color.WHITE);
 		pnInfo.setBounds(10, tabbedPane.getHeight() + 23, this.frame_width - 26, 70);
 		contentPane.add(pnInfo);
-
 		notifyGridChanged();
 	}
 
@@ -129,22 +138,41 @@ public class UIHome extends JFrame {
 		});
 	}
 
-	// NOTE: FUNCTION FOR TESTING ONLY
+	// NOTE:
 
 	public void addTable(Table table) {
-		final String finalTableName = "Bàn " + table.getName();
+		if (first_time) {
+			pnFirstFloor.removeAll();
+			pnSecondFloor.removeAll();
+			pnThirdFloor.removeAll();
+			busy = 0;
+			free = 0;
+			first_time = false;
+		}
+		final String finalTableName = "B\u00E0n " + table.getName();
 		final boolean finalStatus = table.getIsAvailable();
+		final String finalTableId = table.getId();
 		JButton btnTable = new JButton(finalTableName);
+		// change color
+		if (finalStatus) {
+			btnTable.setBackground(new Color(102, 204, 102));
+			this.free++;
+		} else {
+			btnTable.setBackground(new Color(255, 102, 102));
+			this.busy++;
+			btnTable.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					UITableDetail frame = new UITableDetail(finalTableName, finalStatus, UIHome.this, finalTableId);
+					TableDetailController controller = new TableDetailController(frame, UIHome.this);
+					setVisible(false);
+					frame.setVisible(true);
+				}
+			});
+		}
+
 		btnTable.setFont(new Font("Arial", Font.PLAIN, 15));
-		btnTable.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				UITableDetail frame = new UITableDetail(finalTableName, finalStatus, UIHome.this, "");
-				TableDetailController controller = new TableDetailController(frame, UIHome.this);
-				setVisible(false);
-				frame.setVisible(true);
-			}
-		});
+
 		btnTable.setBounds(10, 10, 123, 70);
 		btnTable.setPreferredSize(new Dimension((pnFirstFloor.getWidth() - 60) / 5, 80));
 		switch (table.getFloor_id()) {
@@ -158,6 +186,12 @@ public class UIHome extends JFrame {
 			pnThirdFloor.add(btnTable);
 			break;
 		}
+
+		pnInfo.notifyGridChanged(free, busy);
+		if (table.getId().equals("2_19")) {
+			first_time = true;
+		}
+
 		this.notifyGridChanged();
 	}
 
@@ -178,4 +212,5 @@ public class UIHome extends JFrame {
 		this.repaint();
 
 	}
+
 }
