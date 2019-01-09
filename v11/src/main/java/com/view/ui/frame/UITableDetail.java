@@ -113,7 +113,7 @@ public class UITableDetail extends JFrame {
 		table.setBorder(new LineBorder(SystemColor.activeCaptionBorder));
 
 		tableModel = new DefaultTableModel(orderList,
-				new String[] { "Food", "Amount", "Price", "Discount", "Subtotal" });
+				new String[] { "M\u00F3n", "S\u1ED1 l\u01B0\u1EE3ng", "Gi\u00E1", "Khuy\u1EBFn m\u00E3i", "T\u1ED5ng" });
 		table.setModel(tableModel);
 
 		table.getColumnModel().getColumn(0).setPreferredWidth(120);
