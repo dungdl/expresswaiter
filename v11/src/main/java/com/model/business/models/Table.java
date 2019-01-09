@@ -11,6 +11,13 @@ public class Table {
 		this.name = name;
 		this.isAvailable = isAvailable;
 		this.floor_id = floor_id;
+		
+		if (id == null || name == null) {
+		    throw new IllegalArgumentException("Not having enough information to form a table");
+		}
+		if (floor_id < 0) {
+		    throw new IllegalArgumentException("Floor id cannot be negative");
+		}
 	}
 	
 	public Table() {
