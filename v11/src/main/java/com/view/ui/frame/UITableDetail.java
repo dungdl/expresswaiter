@@ -198,11 +198,11 @@ public class UITableDetail extends JFrame {
 		pnStatus.setLayout(null);
 		{
 			if (paid) {
-				lblStatus = new JLabel("FREE");
+				lblStatus = new JLabel("Tr\u00E1ng");
 				pnStatus.setBackground(new Color(102, 204, 102));
 
 			} else {
-				lblStatus = new JLabel("BUSY");
+				lblStatus = new JLabel("B\u1EAdn");
 				pnStatus.setBackground(new Color(255, 102, 102));
 			}
 			lblStatus.setFont(new Font("Arial", Font.PLAIN, 15));
@@ -219,8 +219,8 @@ public class UITableDetail extends JFrame {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent we) {
-				String ObjButtons[] = { "Yes", "No" };
-				int PromptResult = JOptionPane.showOptionDialog(null, "Back to home?", "Smart Restaurant",
+				String ObjButtons[] = { "C\u00F3", "Kh\u00F4ng" };
+				int PromptResult = JOptionPane.showOptionDialog(null, "Quay v\u1EC1 trang ch\u1EE7?", "Nh\u00E0 h\u00E0ng th\u00F4ng minh",
 						JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, ObjButtons, ObjButtons[1]);
 				if (PromptResult == JOptionPane.YES_OPTION) {
 					UITableDetail.this.dispose();
@@ -242,7 +242,7 @@ public class UITableDetail extends JFrame {
 	public void setBill(Bill bill) {
 		this.bill = bill;
 
-		ArrayList<PaidOrder> listPaidOrder = new ArrayList<>();
+		ArrayList<PaidOrder> listPaidOrder = new ArrayList<PaidOrder>();
 
 		for (Order o : this.bill.getListOrder()) {
 			boolean contain = false;
